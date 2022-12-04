@@ -23,6 +23,9 @@ Piece * GameBoard::getPiece(int row, int col) {
 
 GameBoard::~GameBoard() {
   for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      delete pieces[i][j]; // delete each piece
+    }
     delete[] pieces[i];
   }
   delete[] pieces;

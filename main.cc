@@ -27,7 +27,6 @@ int main() {
       s.render();
     }
     else if (command == "addtext") {
-      int top, bottom, left, right;
       Text * text = new Text{&s};
       observers.push_back(text);
       s.attach(observers.back());
