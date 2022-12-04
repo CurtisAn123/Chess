@@ -1,16 +1,22 @@
 #ifndef _PIECE_H_
 #define _PIECE_H_
 
+#include <string>
+#include <iostream>
+
 class Piece {
-  Color color;
-  std::string type;
+protected:
+  std::string color;
+  char type;
   int row, col;
   
 public:
+  Piece(std::string color, char type, int row, int col);
   bool move(int c, int r);
-  std::string getType () const;
+  char getType () const;
   void getColour() const;
   void print();
+  ~Piece();
 };
 
 #endif

@@ -1,15 +1,17 @@
 CXX = g++
-CXXFLAGS = -std=c++14 -Wall -MMD -Werror=vla
+CXXFLAGS = -g -std=c++14 -Wall -MMD -Werror=vla
 EXEC = chess
-OBJECTS = main.o
+SRC = .
+SOURCES = $(wildcard *.cc)
+OBJECTS = ${SOURCES:.cc=.o}
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}
-	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC}
 
 -include ${DEPENDS}
 
 .PHONY: clean
 
 clean:
-	rm ${OBJECTS} ${EXEC} ${DEPENDS}
+	rm ${OBJECTS} ${DEPENDS} ${EXEC}

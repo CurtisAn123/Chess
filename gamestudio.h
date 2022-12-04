@@ -2,6 +2,7 @@
 #define GAMESTUDIO_H
 #include <iostream>
 #include "subject.h"
+#include "piece.h"
 
 class GameBoard;
 
@@ -12,12 +13,11 @@ class GameStudio : public Subject {
   GameBoard *Board;
 
  public:
-  explicit GameStudio(GameBoard *Board): Board{Board} {}
+  explicit GameStudio(GameBoard *gameBoard): Board{gameBoard} {}
 
-  GameBoard *&Board() { return Board; }
+  GameBoard *&getBoard() { return Board; }
   void reset();
   void render();
-  void animate(int numTicks);
   char getState(int row, int col) const override;
   ~GameStudio();
 };
