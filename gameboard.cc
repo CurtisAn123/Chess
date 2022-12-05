@@ -67,9 +67,11 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
     throw InvalidMove{};
   } // checks if board is legal if piece has moved (original square is empty)
 
+  /*
   if (!p->move(endRow, endCol)) {
     throw InvalidMove{};
   } // checks if p is able to move to the end square
+  */
 
   delete pieces[endRow][endCol];
   pieces[endRow][endCol] = p;
@@ -83,18 +85,18 @@ bool GameBoard::check(std::string color) {
     c = whiteKing->getCol();
   } else {
     r = blackKing->getRow();
-    c = blackKing->getRow();
+    c = blackKing->getCol();
   }
 
-  // checks for opposing pieces horizontally that can deliver checks
-  for (int i = r; i < 8; ++i) {
+  // checks for opposing pieces vertically that can deliver checks
+  for (int i = r+1; i < 8; ++i) {
     if (pieces[i][c]->getColor() == color) {
       break;
     } else if (pieces[i][c]->getType() == 'r' || pieces[i][c]->getType() == 'q') {
       return true;
     }
   }
-  for (int i = r; i >= 0; --i) {
+  for (int i = r-1; i >= 0; --i) {
     if (pieces[i][c]->getColor() == color) {
       break;
     } else if (pieces[i][c]->getType() == 'r' || pieces[i][c]->getType() == 'q') {
@@ -103,14 +105,14 @@ bool GameBoard::check(std::string color) {
   }
 
   // checks for opposing pieces vertically that can deliver checks
-  for (int i = c; i < 8; ++i) {
+  for (int i = c+1; i < 8; ++i) {
     if (pieces[r][i]->getColor() == color) {
       break;
     } else if (pieces[r][i]->getType() == 'r' || pieces[r][i]->getType() == 'q') {
       return true;
     }
   }
-  for (int i = c; i >= 0; --i) {
+  for (int i = c-1; i >= 0; --i) {
     if (pieces[r][i]->getColor() == color) {
       break;
     } else if (pieces[r][i]->getType() == 'r' || pieces[r][i]->getType() == 'q') {
@@ -118,7 +120,12 @@ bool GameBoard::check(std::string color) {
     }
   }
 
+  return false;
   // need to add a check for knights and bishops
+}
+
+bool GameBoard::legalBoard() {
+  return true;
 }
 
 Piece * GameBoard::getPiece(int row, int col) {

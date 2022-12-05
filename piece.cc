@@ -10,5 +10,3 @@ char Piece::getType() const {
 std::string Piece::getColor() const {
   return color;
 }
-
-Piece::~Piece() {}

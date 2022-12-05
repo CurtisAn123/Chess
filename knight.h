@@ -8,6 +8,7 @@ class Knight : public Piece {
 public:
   Knight(std::string color, char type, int row, int col);
   bool move(int r, int c) override;
+  ~Knight();
 };
 
 #endif

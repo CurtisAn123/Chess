@@ -5,6 +5,7 @@
 
 void GameStudio::movePiece(int startRow, int startCol, int endRow, int endCol, std::string color) {
   if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
+    out << "out of range";
     throw InvalidMove{};
   }
   Board->move(startRow, startCol, endRow, endCol, color);
@@ -14,10 +15,10 @@ void GameStudio::movePiece(int startRow, int startCol, int endRow, int endCol, s
   // catch in main. Checkmate exception should have a string on who wins
 
   if (Board->check("white")) {
-    out << "Black king is in check." << std::endl;
+    out << "White king is in check." << std::endl;
   }
   if (Board->check("black")) {
-    out << "White king is in check." << std::endl;
+    out << "Black king is in check." << std::endl;
   }
 }
 

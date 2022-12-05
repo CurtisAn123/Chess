@@ -8,6 +8,7 @@ class Rook : public Piece {
 public:
   Rook(std::string color, char type, int row, int col);
   bool move(int r, int c) override;
+  ~Rook();
 };
 
 #endif

@@ -10,6 +10,7 @@ public:
   bool move(int c, int r) override;
   int getRow();
   int getCol();
+  ~King();
 };
 
 #endif

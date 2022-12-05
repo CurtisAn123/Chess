@@ -12,10 +12,10 @@ protected:
   
 public:
   Piece(std::string color, char type, int row, int col);
-  virtual bool move(int r, int c);
+  virtual bool move(int r, int c) = 0;
   char getType () const;
   std::string getColor() const;
-  ~Piece();
+  virtual ~Piece() = default;
 };
 
 #endif
