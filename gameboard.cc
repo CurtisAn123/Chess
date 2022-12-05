@@ -104,7 +104,7 @@ bool GameBoard::check(std::string color) {
     }
   }
 
-  // checks for opposing pieces vertically that can deliver checks
+  // checks for opposing pieces horizontally that can deliver checks
   for (int i = c+1; i < 8; ++i) {
     if (pieces[r][i]->getColor() == color) {
       break;
@@ -120,6 +120,44 @@ bool GameBoard::check(std::string color) {
     }
   }
 
+  // checks for diagonal checks
+  int i = 1;
+  while(r + i < 8 && c + i < 8) {
+    if (pieces[r+i][c+i]->getColor() == color) {
+      break;
+    } else if (pieces[r+i][c+i]->getType() == 'b' || pieces[r+i][c+i]->getType() == 'q') {
+      return true;
+    }
+    ++i;
+  }
+  i = 1;
+  while(r - i >= 0 && c - i >= 0) {
+    if (pieces[r-i][c-i]->getColor() == color) {
+      break;
+    } else if (pieces[r-i][c-i]->getType() == 'b' || pieces[r-i][c-i]->getType() == 'q') {
+      return true;
+    }
+    ++i;
+  }
+  i = 1;
+  while(r + i < 8 && c - i >= 0) {
+    if (pieces[r+i][c-i]->getColor() == color) {
+      break;
+    } else if (pieces[r+i][c-i]->getType() == 'b' || pieces[r+i][c-i]->getType() == 'q') {
+      return true;
+    }
+    ++i;
+  }
+  i = 1;
+  while(r - i >= 0 && c + i < 8) {
+    if (pieces[r-i][c+i]->getColor() == color) {
+      break;
+    } else if (pieces[r-i][c+i]->getType() == 'b' || pieces[r-i][c+i]->getType() == 'q') {
+      return true;
+    }
+    ++i;
+  }
+  
   return false;
   // need to add a check for knights and bishops
 }

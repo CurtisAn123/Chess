@@ -37,6 +37,7 @@ int main() {
         std::cin >> start >> startRow >> end >> endRow;
 
         // fixing coordinates as a1 is at (0,0)
+        // converts characters to cols
         startCol = start - 97;
         endCol = end - 97;
         startRow = 8 - startRow;
