@@ -6,7 +6,6 @@
 #include "king.h"
 
 class GameBoard {
-  friend class GameStudio;
 
   std::ostream &out = std::cout;
 
@@ -15,12 +14,18 @@ class GameBoard {
   King * blackKing;
 
   bool checkmate();
-  bool check(std::string color);
   bool stalemate();
+
+  bool verticalCheck(int r, int c, std::string color);
+  bool diagonalCheck(int r, int c, std::string color);
+  bool knightCheck(int r, int c, std::string color);
+  bool pawnCheck(int r, int c, std::string color);
 
  public:
   GameBoard();
   void move(int startRow, int startCol, int endRow, int endCol, std::string color);
+
+  bool check(std::string color);
   bool legalBoard();
   void resetBoard();
 

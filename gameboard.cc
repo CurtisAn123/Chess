@@ -77,17 +77,7 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
   pieces[endRow][endCol] = p;
 }
 
-bool GameBoard::check(std::string color) {
-  // returns true if color's king is in check
-  int r, c;
-  if (color == "white") {
-    r = whiteKing->getRow();
-    c = whiteKing->getCol();
-  } else {
-    r = blackKing->getRow();
-    c = blackKing->getCol();
-  }
-
+bool GameBoard::verticalCheck(int r, int c, std::string color) {
   // checks for opposing pieces vertically that can deliver checks
   for (int i = r+1; i < 8; ++i) {
     if (pieces[i][c]->getColor() == color) {
@@ -119,7 +109,11 @@ bool GameBoard::check(std::string color) {
       return true;
     }
   }
+  
+  return false;
+}
 
+bool GameBoard::diagonalCheck(int r, int c, std::string color) {
   // checks for diagonal checks
   int i = 1;
   while(r + i < 8 && c + i < 8) {
@@ -157,7 +151,11 @@ bool GameBoard::check(std::string color) {
     }
     ++i;
   }
+  
+  return false;
+}
 
+bool GameBoard::knightCheck(int r, int c, std::string color) {
   int kr, kc; // knight row, knight col
   // first 4 checks (r + 2)(c + 1)
   kr = r + 2;
@@ -220,6 +218,54 @@ bool GameBoard::check(std::string color) {
   }
 
   return false;
+}
+
+bool GameBoard::pawnCheck(int r, int c, std::string color) {
+  int pr, pc; // pawn row, pawn col
+  if (color == "white") {
+    pr = r - 1;
+    pc = c + 1;
+    if (pr >= 0 && pc < 8) {
+      if (pieces[pr][pc]->getColor() != color && pieces[pr][pc]->getType() == 'p') {
+        return true;
+      }
+    }
+    pc = c - 1;
+    if (pr >= 0 && pc >= 0) {
+      if (pieces[pr][pc]->getColor() != color && pieces[pr][pc]->getType() == 'p') {
+        return true;
+      }
+    }
+  } else {
+    pr = r + 1;
+    pc = c + 1;
+    if (pr < 8 && pc < 8) {
+      if (pieces[pr][pc]->getColor() != color && pieces[pr][pc]->getType() == 'p') {
+        return true;
+      }
+    }
+    pc = c - 1;
+    if (pr < 8 && pc >= 0) {
+      if (pieces[pr][pc]->getColor() != color && pieces[pr][pc]->getType() == 'p') {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+bool GameBoard::check(std::string color) {
+  // returns true if color's king is in check
+  int r, c;
+  if (color == "white") {
+    r = whiteKing->getRow();
+    c = whiteKing->getCol();
+  } else {
+    r = blackKing->getRow();
+    c = blackKing->getCol();
+  }
+
+  return verticalCheck(r, c, color) || diagonalCheck(r, c, color) || knightCheck(r, c, color) || pawnCheck(r, c, color);
 }
 
 bool GameBoard::legalBoard() {
