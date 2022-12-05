@@ -17,13 +17,15 @@ GameBoard::GameBoard() {
   } //allocates cols
 
   // hardcode this for a default setup
+  whiteKing = new King("white", 'k', 7, 4);
+  blackKing = new King("black", 'k', 0, 4);;
 
   // black pieces
   pieces[0][0] = new Rook("black", 'r', 0, 0);
   pieces[0][1] = new Knight("black", 'n', 0, 1);
   pieces[0][2] = new Bishop("black", 'b', 0, 2);
   pieces[0][3] = new Queen("black", 'q', 0, 3);
-  pieces[0][4] = new King("black", 'k', 0, 4);
+  pieces[0][4] = blackKing;
   pieces[0][5] = new Bishop("black", 'b', 0, 5);
   pieces[0][6] = new Knight("black", 'n', 0, 6);
   pieces[0][7] = new Rook("black", 'r', 0, 7);
@@ -48,22 +50,75 @@ GameBoard::GameBoard() {
   pieces[7][1] = new Knight("white", 'n', 7, 1);
   pieces[7][2] = new Bishop("white", 'b', 7, 2);
   pieces[7][3] = new Queen("white", 'q', 7, 3);
-  pieces[7][4] = new King("white", 'k', 7, 4);
+  pieces[7][4] = whiteKing;
   pieces[7][5] = new Bishop("white", 'b', 7, 5);
   pieces[7][6] = new Knight("white", 'n', 7, 6);
   pieces[7][7] = new Rook("white", 'r', 7, 7);
-  
 }
 
 void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::string color) {
   Piece * p = pieces[startRow][startCol];
   if (p->getColor() != color) {
-    std::cout << p->getColor();
     throw InvalidMove{};
   }
-  delete pieces[endRow][endCol];
-  pieces[endRow][endCol] = pieces[startRow][startCol];
+
   pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
+  if (!legalBoard()) {
+    throw InvalidMove{};
+  } // checks if board is legal if piece has moved (original square is empty)
+
+  if (!p->move(endRow, endCol)) {
+    throw InvalidMove{};
+  } // checks if p is able to move to the end square
+
+  delete pieces[endRow][endCol];
+  pieces[endRow][endCol] = p;
+}
+
+bool GameBoard::check(std::string color) {
+  // returns true if color's king is in check
+  int r, c;
+  if (color == "white") {
+    r = whiteKing->getRow();
+    c = whiteKing->getCol();
+  } else {
+    r = blackKing->getRow();
+    c = blackKing->getRow();
+  }
+
+  // checks for opposing pieces horizontally that can deliver checks
+  for (int i = r; i < 8; ++i) {
+    if (pieces[i][c]->getColor() == color) {
+      break;
+    } else if (pieces[i][c]->getType() == 'r' || pieces[i][c]->getType() == 'q') {
+      return true;
+    }
+  }
+  for (int i = r; i >= 0; --i) {
+    if (pieces[i][c]->getColor() == color) {
+      break;
+    } else if (pieces[i][c]->getType() == 'r' || pieces[i][c]->getType() == 'q') {
+      return true;
+    }
+  }
+
+  // checks for opposing pieces vertically that can deliver checks
+  for (int i = c; i < 8; ++i) {
+    if (pieces[r][i]->getColor() == color) {
+      break;
+    } else if (pieces[r][i]->getType() == 'r' || pieces[r][i]->getType() == 'q') {
+      return true;
+    }
+  }
+  for (int i = c; i >= 0; --i) {
+    if (pieces[r][i]->getColor() == color) {
+      break;
+    } else if (pieces[r][i]->getType() == 'r' || pieces[r][i]->getType() == 'q') {
+      return true;
+    }
+  }
+
+  // need to add a check for knights and bishops
 }
 
 Piece * GameBoard::getPiece(int row, int col) {

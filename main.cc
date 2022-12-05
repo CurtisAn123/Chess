@@ -47,7 +47,6 @@ int main() {
         } else {
           s.movePiece(startRow, startCol, endRow, endCol, "black");
         }
-        s.render();
         whiteToPlay = !whiteToPlay;
       } catch (InvalidMove e) {
         std::cout << "Invalid Move" << std::endl;

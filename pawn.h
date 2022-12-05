@@ -7,7 +7,7 @@ class Pawn : public Piece {
   
 public:
   Pawn(std::string color, char type, int row, int col);
-  void move(int c, int r);
+  bool move(int r, int c) override;
 };
 
 #endif

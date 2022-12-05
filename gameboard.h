@@ -3,16 +3,19 @@
 
 #include <iostream>
 #include "piece.h"
+#include "king.h"
 
 class GameBoard {
+  friend class GameStudio;
+
   std::ostream &out = std::cout;
 
   Piece *** pieces;
-  Piece * whiteKing;
-  Piece * blackKing;
+  King * whiteKing;
+  King * blackKing;
 
   bool checkmate();
-  bool check();
+  bool check(std::string color);
   bool stalemate();
 
  public:
