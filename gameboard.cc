@@ -157,9 +157,69 @@ bool GameBoard::check(std::string color) {
     }
     ++i;
   }
-  
+
+  int kr, kc; // knight row, knight col
+  // first 4 checks (r + 2)(c + 1)
+  kr = r + 2;
+  kc = c + 1;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+  kr = r - 2;
+  kc = c - 1;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+  kr = r + 2;
+  kc = c - 1;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+  kr = r - 2;
+  kc = c + 1;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+
+  // next 4 checks (r + 1)(c + 2)
+  kr = r + 1;
+  kc = c + 2;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+  kr = r - 1;
+  kc = c - 2;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+  kr = r + 1;
+  kc = c - 2;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+  kr = r - 1;
+  kc = c + 2;
+  if (kr < 8 && kr >= 0 && kc < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'n') {
+      return true;
+    }
+  }
+
   return false;
-  // need to add a check for knights and bishops
 }
 
 bool GameBoard::legalBoard() {
