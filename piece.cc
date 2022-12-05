@@ -7,4 +7,8 @@ char Piece::getType() const {
   return type;
 }
 
+std::string Piece::getColor() const {
+  return color;
+}
+
 Piece::~Piece() {}

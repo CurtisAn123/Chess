@@ -12,10 +12,9 @@ protected:
   
 public:
   Piece(std::string color, char type, int row, int col);
-  bool move(int c, int r);
+  bool move(int r, int c);
   char getType () const;
-  void getColour() const;
-  void print();
+  std::string getColor() const;
   ~Piece();
 };
 
