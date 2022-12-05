@@ -4,10 +4,17 @@
 
 char GameStudio::getState(int row, int col) const {
   Piece *piece = Board->getPiece(row, col);
+  char c = piece->getType();
+  if (c == ' ') {
+    if ((row+col) % 2 == 0) {
+      return c;
+    }
+    return '_';
+  } // return for empty spaces
   if (piece->getColor() == "white") {
-    return piece->getType() - 32;
+    return c - 32; // capitalizes text
   }
-  return piece->getType();
+  return c;
 }
 
 void GameStudio::render() {
