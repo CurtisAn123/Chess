@@ -16,6 +16,9 @@ class GameStudio : public Subject {
   explicit GameStudio(GameBoard *gameBoard): Board{gameBoard} {}
 
   GameBoard *&getBoard() { return Board; }
+
+  void movePiece(int startRow, int startCol, int endRow, int endCol, std::string color);
+
   void reset();
   void render();
   char getState(int row, int col) const override;

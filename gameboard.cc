@@ -7,6 +7,7 @@
 #include "queen.h"
 #include "king.h"
 #include "pawn.h"
+#include "invalidmove.h"
 
 GameBoard::GameBoard() {
   // allocating the memory for the 2d array of pointers
@@ -31,12 +32,14 @@ GameBoard::GameBoard() {
     pieces[1][i] = new Pawn("black", 'p', 0, i);
   }
 
+  // empty spaces
   for (int i = 2; i < 6; ++i) {
     for (int j = 0; j < 8; ++j) {
       pieces[i][j] = new Empty("", ' ', i, j);
     }
   }
 
+  // white pieces
   for (int i = 0; i < 8; ++i) {
     pieces[6][i] = new Pawn("white", 'p', 6, i);
   }
@@ -50,6 +53,17 @@ GameBoard::GameBoard() {
   pieces[7][6] = new Knight("white", 'n', 7, 6);
   pieces[7][7] = new Rook("white", 'r', 7, 7);
   
+}
+
+void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::string color) {
+  Piece * p = pieces[startRow][startCol];
+  if (p->getColor() != color) {
+    std::cout << p->getColor();
+    throw InvalidMove{};
+  }
+  delete pieces[endRow][endCol];
+  pieces[endRow][endCol] = pieces[startRow][startCol];
+  pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
 }
 
 Piece * GameBoard::getPiece(int row, int col) {
