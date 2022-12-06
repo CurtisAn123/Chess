@@ -71,24 +71,18 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
   if (p->getType() == 'p') {  //checks for valid pawn move
     if (color == "white") {
       if (startRow == 6 && endCol - startCol == 0 && startRow - endRow != 1 && startRow - endRow != 2){
-        std::cout <<"bad pawn move" << std::endl;
         throw InvalidMove{};
       } else if (startRow != 6 && endCol - startCol == 0 && startRow - endRow != 1) {
-        std::cout <<"bad pawn move" << std::endl;
         throw InvalidMove{};
       } else if (abs(endCol - startCol) == 1 && startRow - endRow == 1 && endp->getColor() != "black") { // checks for valid pawn capture
-        std::cout <<"bad pawn move" << std::endl;
         throw InvalidMove{};
       } 
     } else if (color == "black"){
       if (startRow == 1 && endCol - startCol == 0 && endRow - startRow != 1 && endRow - startRow != 2){
-        std::cout <<"bad pawn move" << std::endl;
         throw InvalidMove{};
       } else if (startRow != 1 && endCol - startCol == 0 && endRow - startRow != 1) {
-        std::cout <<"bad pawn move" << std::endl;
         throw InvalidMove{};
       } else if (abs(endCol - startCol) == 1 && endRow - startRow == 1 && endp->getColor() != "white") { // checks for valid pawn capture
-        std::cout <<"bad pawn move" << std::endl;
         throw InvalidMove{};
       } 
     }
@@ -96,35 +90,54 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
 
   if (p->getType() == 'r') { //checks for valid rook move
       if (endRow != startRow && endCol != startCol) {
-        std::cout <<"bad rook move" << std::endl;
         throw InvalidMove{};
+      } else if (endRow == startRow) {
+        for (int i = startCol; i < endCol; i++){
+          if (pieces[startRow][i]->getType() != ' '){
+            std::cout << "something is blockign the way" << std::endl;
+            throw InvalidMove{};
+          }
+        }
+      } else if (endCol == startCol) {
+        if (endRow > startRow) {
+          for (int i = startRow; i < endRow; i++){
+          if (pieces[i][startCol]->getType() != ' '){
+            std::cout << "something is blockign the way" << std::endl;
+            throw InvalidMove{};
+          }
+        }
+        } else if (startRow > endRow) {
+          std::cout << "got here" << std::endl;
+          for (int i = startRow; i > endRow; i--){
+          if (pieces[i][startCol]->getType() != ' '){
+            std::cout << "something is blockign the way" << std::endl;
+            throw InvalidMove{};
+          }
+        }
+        }
       }
   }
 
   if (p->getType() == 'b') { //checks for valid bishop move
       if (abs(endRow - startRow) != abs(endCol - startCol)) {
-        std::cout <<"bad bishop move" << std::endl;
         throw InvalidMove{};
       }
   }
   
   if (p->getType() == 'n') { //checks for valid knight move
       if ((abs(endRow - startRow) != 2 || abs(endCol - startCol) != 1) && (abs(endRow - startRow) != 1 || abs(endCol - startCol) != 2 )) {
-        std::cout <<"bad knight move" << std::endl;
         throw InvalidMove{};
       }
   }
 
   if (p->getType() == 'q') { //checks for valid queen move
       if ((abs(endRow - startRow) != abs(endCol - startCol)) && (endRow != startRow && endCol != startCol)) {
-        std::cout <<"bad queen move" << std::endl;
         throw InvalidMove{};
       }
   }
 
     if (p->getType() == 'k') { //checks for valid king move
       if ((abs(endRow - startRow) != 1 && abs(endRow - startRow) != 0) || (abs(endCol - endCol) != 0 && abs(endCol - endCol) != 1)) {
-        std::cout <<"bad king move" << std::endl;
         throw InvalidMove{};
       }
   }
