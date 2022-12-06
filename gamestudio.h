@@ -1,15 +1,19 @@
 #ifndef GAMESTUDIO_H
 #define GAMESTUDIO_H
 #include <iostream>
+#include <string>
+
 #include "subject.h"
 #include "piece.h"
 #include "player.h"
+
 
 class GameBoard;
 
 class GameStudio : public Subject {
   int whiteWins, blackWins;
   std::ostream &out = std::cout;
+  std::istream &in = std::cin;
   Player * white;
   Player * black;
   GameBoard *Board;
@@ -26,8 +30,8 @@ class GameStudio : public Subject {
   Player *&getBlack();
 
   void movePiece(int startRow, int startCol, int endRow, int endCol, std::string color);
+  void setup();
 
-  void reset();
   void render();
   char getState(int row, int col) const override;
   ~GameStudio();

@@ -25,6 +25,7 @@ class GameBoard {
 
  public:
   GameBoard();
+  GameBoard(bool setup);
   void move(int startRow, int startCol, int endRow, int endCol, std::string color);
 
   bool check(std::string color);
@@ -32,7 +33,7 @@ class GameBoard {
 
   bool legalBoard();
   Piece *getPiece(int row, int col);
-  void setPiece(Piece* p, int c, int r);
+  void setPiece(Piece *p, int r, int c);
 
   ~GameBoard();
 };

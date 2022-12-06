@@ -1,16 +1,62 @@
 #include "gamestudio.h"
 #include "gameboard.h"
 #include "piece.h"
+#include "queen.h"
+#include "pawn.h"
+#include "bishop.h"
+#include "knight.h"
+#include "rook.h"
+
 #include "invalidmove.h"
 
 GameStudio::GameStudio(): whiteWins{0}, blackWins{0}, white{nullptr}, black{nullptr}, Board{nullptr} {}
 
 GameBoard *&GameStudio::getBoard() { return Board; }
+
 void GameStudio::setBoard(GameBoard * Board) {
   if (this->Board) {
     delete this->Board;
   }
   this->Board = Board; }
+
+void GameStudio::setup() {
+  std::string command;
+  while (in >> command) {
+    if (command == "+") {
+      char type, column;
+      int row, col;
+      std::cin >> type >> column >> row;
+      col = column - 97;
+      Piece * p;
+      if (type == 'K') {
+        p = new King("white", 'k', row, col);
+      } else if (type == 'k') {
+        p = new King("black", 'k', row, col);
+      } else if (type == 'Q') {
+        p = new Queen("white", 'q', row, col);
+      } else if (type == 'q') {
+        p = new Queen("black", 'q', row, col);
+      } else if (type == 'P') {
+        p = new Pawn("white", 'p', row, col);
+      } else if (type == 'p') {
+        p = new Pawn("black", 'p', row, col);
+      } else if (type == 'B') {
+        p = new Bishop("white", 'b', row, col);
+      } else if (type == 'b') {
+        p = new Bishop("black", 'b', row, col);
+      } else if (type == 'N') {
+        p = new Knight("white", 'n', row, col);
+      } else if (type == 'n') {
+        p = new Knight("black", 'n', row, col);
+      } else if (type == 'R') {
+        p = new Rook("white", 'r', row, col);
+      } else if (type == 'r') {
+        p = new Rook("black", 'r', row, col);
+      }
+      Board->setPiece(p, row, col);
+    }
+  }
+}
 
 void GameStudio::setWhite(Player * player) {
   if (white) {

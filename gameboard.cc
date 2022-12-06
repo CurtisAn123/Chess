@@ -9,7 +9,7 @@
 #include "pawn.h"
 #include "invalidmove.h"
 
-GameBoard::GameBoard() {
+GameBoard::GameBoard(): whiteKing{new King("white", 'k', 7, 4)}, blackKing{new King("black", 'k', 0, 4)} {
   // allocating the memory for the 2d array of pointers
   pieces = new Piece**[8]; // allocates rows
   for (int i = 0; i < 8; ++i) {
@@ -17,8 +17,6 @@ GameBoard::GameBoard() {
   } //allocates cols
 
   // hardcode this for a default setup
-  whiteKing = new King("white", 'k', 7, 4);
-  blackKing = new King("black", 'k', 0, 4);;
 
   // black pieces
   pieces[0][0] = new Rook("black", 'r', 0, 0);
@@ -54,6 +52,21 @@ GameBoard::GameBoard() {
   pieces[7][5] = new Bishop("white", 'b', 7, 5);
   pieces[7][6] = new Knight("white", 'n', 7, 6);
   pieces[7][7] = new Rook("white", 'r', 7, 7);
+}
+
+GameBoard::GameBoard(bool setup): whiteKing{nullptr}, blackKing{nullptr} {
+  // allocating the memory for the 2d array of pointers
+  pieces = new Piece**[8]; // allocates rows
+  for (int i = 0; i < 8; ++i) {
+    pieces[i] = new Piece*[8];
+  } //allocates cols
+
+  // empty spaces
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      pieces[i][j] = new Empty("", ' ', i, j);
+    }
+  }
 }
 
 void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::string color) {
@@ -279,11 +292,17 @@ bool GameBoard::check(std::string color) {
 }
 
 bool GameBoard::legalBoard() {
-  return true;
+  // ensure both kings are NOT in check
+  return !check("white") && !check("black");
 }
 
 Piece * GameBoard::getPiece(int row, int col) {
   return pieces[row][col];
+}
+
+void GameBoard::setPiece(Piece *p, int r, int c) {
+  delete pieces[r][c];
+  pieces[r][c] = p;
 }
 
 GameBoard::~GameBoard() {

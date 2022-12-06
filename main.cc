@@ -35,7 +35,7 @@ int main() {
       std::string white, black;
       std::cin >> white >> black;
       
-      // setting appropriate players
+      // setting appropriate players up
       if (white == "human") {
         s.setWhite(new Human('h'));
       } else if (white == "computer") {
@@ -60,6 +60,10 @@ int main() {
       // code a new Board constructor with a parameter that tells it to enter setup mode
       // constructor should take input and output and setup board accordingly
       // call check("white") and check("black") to make sure kings aren't in check and board if finished
+      
+      GameBoard *board = new GameBoard(true);
+      s.setBoard(board);
+      s.setup();
     }
     else if (command == "move") {
       try {
