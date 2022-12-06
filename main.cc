@@ -9,6 +9,9 @@
 #include "gameboard.h"
 #include "gamestudio.h"
 
+#include "human.h"
+#include "computer.h"
+
 #include "piece.h"
 
 #include "invalidmove.h"
@@ -17,9 +20,7 @@ int main() {
   
   std::vector<Observer*> observers;
 
-  GameBoard *board = new GameBoard();
-
-  GameStudio s{board};
+  GameStudio s{};
 
   std::string command;
   bool whiteToPlay = true;
@@ -30,23 +31,58 @@ int main() {
       // prints current board state
       s.render();
     }
+    else if (command == "game") {
+      std::string white, black;
+      std::cin >> white >> black;
+      
+      // setting appropriate players
+      if (white == "human") {
+        s.setWhite(new Human('h'));
+      } else if (white == "computer") {
+        s.setWhite(new Computer('c'));
+      } else {
+        std::cout << "Please specify human or computer" << std::endl;
+        continue;
+      }
+
+      if (black == "human") {
+        s.setBlack(new Human('h'));
+      } else if (black == "computer") {
+        s.setBlack(new Computer('c'));
+      } else {
+        std::cout << "Please specify human or computer" << std::endl;
+        continue;
+      }
+      GameBoard *board = new GameBoard();
+      s.setBoard(board);
+    }
+    else if (command == "setup") {
+      // use getPiece and setPiece
+    }
     else if (command == "move") {
       try {
-        char start, end;
-        int startRow, startCol, endRow, endCol;
-        std::cin >> start >> startRow >> end >> endRow;
+        // checks if it is a human turn to play
+        if ((whiteToPlay && s.getWhite()->getType() == 'h') || (!whiteToPlay && s.getBlack()->getType() == 'h')) {
+          char start, end;
+          int startRow, startCol, endRow, endCol;
+          std::cin >> start >> startRow >> end >> endRow;
 
-        // fixing coordinates as a1 is at (0,0)
-        // converts characters to cols
-        startCol = start - 97;
-        endCol = end - 97;
-        startRow = 8 - startRow;
-        endRow = 8 - endRow;
-        std::cout << startRow << startCol << endRow << endCol << std::endl;
-        if (whiteToPlay) {
-          s.movePiece(startRow, startCol, endRow, endCol, "white");
+          // fixing coordinates as a1 is at (0,0)
+          // converts characters to cols
+          startCol = start - 97;
+          endCol = end - 97;
+          startRow = 8 - startRow;
+          endRow = 8 - endRow;
+          std::cout << startRow << startCol << endRow << endCol << std::endl;
+          if (whiteToPlay) {
+            s.movePiece(startRow, startCol, endRow, endCol, "white");
+          } else {
+            s.movePiece(startRow, startCol, endRow, endCol, "black");
+          }
         } else {
-          s.movePiece(startRow, startCol, endRow, endCol, "black");
+          // implement computer move here
+          // have player->playBestMove() find the best move then call the move function itself
+          std::cout << "Computer turn to play" << std::endl;
         }
         whiteToPlay = !whiteToPlay;
       } catch (InvalidMove e) {

@@ -3,6 +3,31 @@
 #include "piece.h"
 #include "invalidmove.h"
 
+GameStudio::GameStudio(): whiteWins{0}, blackWins{0}, white{nullptr}, black{nullptr}, Board{nullptr} {}
+
+GameBoard *&GameStudio::getBoard() { return Board; }
+void GameStudio::setBoard(GameBoard * Board) {
+  if (this->Board) {
+    delete this->Board;
+  }
+  this->Board = Board; }
+
+void GameStudio::setWhite(Player * player) {
+  if (white) {
+    delete white;
+  }
+  white = player;
+}
+void GameStudio::setBlack(Player * player) {
+  if (black) {
+    delete black;
+  }
+  black = player;
+}
+
+Player *&GameStudio::getWhite() { return white; }
+Player *&GameStudio::getBlack() { return black; }
+
 void GameStudio::movePiece(int startRow, int startCol, int endRow, int endCol, std::string color) {
   if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
     out << "out of range";
@@ -42,4 +67,8 @@ void GameStudio::render() {
   notifyObservers();
 }
 
-GameStudio::~GameStudio() { delete Board; }
+GameStudio::~GameStudio() {
+  delete Board;
+  delete white;
+  delete black;
+}

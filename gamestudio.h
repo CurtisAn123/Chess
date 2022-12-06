@@ -3,19 +3,27 @@
 #include <iostream>
 #include "subject.h"
 #include "piece.h"
+#include "player.h"
 
 class GameBoard;
 
 class GameStudio : public Subject {
-
+  int whiteWins, blackWins;
   std::ostream &out = std::cout;
-
+  Player * white;
+  Player * black;
   GameBoard *Board;
 
  public:
-  explicit GameStudio(GameBoard *gameBoard): Board{gameBoard} {}
+  GameStudio();
 
-  GameBoard *&getBoard() { return Board; }
+  GameBoard *&getBoard();
+  void setBoard(GameBoard * Board);
+
+  void setWhite(Player * player);
+  void setBlack(Player * player);
+  Player *&getWhite();
+  Player *&getBlack();
 
   void movePiece(int startRow, int startCol, int endRow, int endCol, std::string color);
 

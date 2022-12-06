@@ -63,96 +63,7 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
     throw InvalidMove{};
   } 
   if (endp->getColor() == color) {
-    std::cout <<"There's already a piece there" << std::endl;
     throw InvalidMove{};
-  }
-
-//checks for valid moves for every type of piece
-  if (p->getType() == 'p') {  //checks for valid pawn move
-    if (color == "white") {
-      if (startRow == 6 && endCol - startCol == 0 && startRow - endRow != 1 && startRow - endRow != 2){
-        throw InvalidMove{};
-      } else if (startRow != 6 && endCol - startCol == 0 && startRow - endRow != 1) {
-        throw InvalidMove{};
-      } else if (abs(endCol - startCol) == 1 && startRow - endRow == 1 && endp->getColor() != "black") { // checks for valid pawn capture
-        throw InvalidMove{};
-      } else if (startRow - endRow == 2 && pieces[startRow-1][startCol]->getType() != ' '){ // checks for pieces in path of pawn
-        throw InvalidMove{};
-      }
-    } else if (color == "black"){
-      if (startRow == 1 && endCol - startCol == 0 && endRow - startRow != 1 && endRow - startRow != 2){
-        throw InvalidMove{};
-      } else if (startRow != 1 && endCol - startCol == 0 && endRow - startRow != 1) {
-        throw InvalidMove{};
-      } else if (abs(endCol - startCol) == 1 && endRow - startRow == 1 && endp->getColor() != "white") { // checks for valid pawn capture
-        throw InvalidMove{};
-      } else if (endRow - startRow == 2 && pieces[endRow-1][startCol]->getType() != ' '){ // checks for pieces in path of pawn
-        throw InvalidMove{};
-      }
-    }
-  }
-
-  if (p->getType() == 'r') { //checks for valid rook move
-      if (endRow != startRow && endCol != startCol) {
-        throw InvalidMove{};
-      } else if (endRow == startRow) {
-        if (endCol > startCol) {
-          for (int i = startCol; i < endCol; i++){
-          if (pieces[startRow][i]->getType() != ' '){
-            std::cout << "something is blockign the way" << std::endl;
-            throw InvalidMove{};
-          }
-        }
-        } else if (startCol > endCol) {
-          for (int i = startCol; i > endCol; i--){
-          if (pieces[startRow][i]->getType() != ' '){
-            std::cout << "something is blockign the way" << std::endl;
-            throw InvalidMove{};
-          }
-        }
-        }
-      } else if (endCol == startCol) {
-        if (endRow > startRow) {
-          for (int i = startRow; i < endRow; i++){
-          if (pieces[i][startCol]->getType() != ' '){
-            std::cout << "something is blockign the way" << std::endl;
-            throw InvalidMove{};
-          }
-        }
-        } else if (startRow > endRow) {
-          std::cout << "got here" << std::endl;
-          for (int i = startRow; i > endRow; i--){
-          if (pieces[i][startCol]->getType() != ' '){
-            std::cout << "something is blockign the way" << std::endl;
-            throw InvalidMove{};
-          }
-        }
-        }
-      }
-  }
-
-  if (p->getType() == 'b') { //checks for valid bishop move
-      if (abs(endRow - startRow) != abs(endCol - startCol)) {
-        throw InvalidMove{};
-      }
-  }
-  
-  if (p->getType() == 'n') { //checks for valid knight move
-      if ((abs(endRow - startRow) != 2 || abs(endCol - startCol) != 1) && (abs(endRow - startRow) != 1 || abs(endCol - startCol) != 2 )) {
-        throw InvalidMove{};
-      }
-  }
-
-  if (p->getType() == 'q') { //checks for valid queen move
-      if ((abs(endRow - startRow) != abs(endCol - startCol)) && (endRow != startRow && endCol != startCol)) {
-        throw InvalidMove{};
-      }
-  }
-
-    if (p->getType() == 'k') { //checks for valid king move
-      if ((abs(endRow - startRow) != 1 && abs(endRow - startRow) != 0) || (abs(endCol - endCol) != 0 && abs(endCol - endCol) != 1)) {
-        throw InvalidMove{};
-      }
   }
 
   pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
@@ -160,14 +71,20 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
     throw InvalidMove{};
   } // checks if board is legal if piece has moved (original square is empty)
 
-  /*
-  if (!p->move(endRow, endCol)) {
+    if (!p->move(endRow, endCol, pieces)) {
     throw InvalidMove{};
   } // checks if p is able to move to the end square
-  */
-
+  
   delete pieces[endRow][endCol];
   pieces[endRow][endCol] = p;
+}
+
+bool GameBoard::pawnPromotion(int r, int c, std::string color){
+  if (color == "white" && r == 0) {
+    return true;
+  } else if (color == "black" && r == 7) {
+    return true;
+  }
 }
 
 bool GameBoard::verticalCheck(int r, int c, std::string color) {

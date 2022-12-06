@@ -7,7 +7,7 @@ class Bishop : public Piece {
   
 public:
   Bishop(std::string color, char type, int row, int col);
-  bool move(int r, int c) override;
+  bool move(int r, int c, Piece*** pieces) override;
   ~Bishop();
 };
 

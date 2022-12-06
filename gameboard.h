@@ -4,6 +4,7 @@
 #include <iostream>
 #include "piece.h"
 #include "king.h"
+#include "rook.h"
 
 class GameBoard {
 
@@ -15,6 +16,7 @@ class GameBoard {
 
   bool checkmate();
   bool stalemate();
+  bool pawnPromotion(int r, int c, std::string color);
 
   bool verticalCheck(int r, int c, std::string color);
   bool diagonalCheck(int r, int c, std::string color);
@@ -26,9 +28,9 @@ class GameBoard {
   void move(int startRow, int startCol, int endRow, int endCol, std::string color);
 
   bool check(std::string color);
-  bool legalBoard();
   void resetBoard();
 
+  bool legalBoard();
   Piece *getPiece(int row, int col);
   void setPiece(Piece* p, int c, int r);
 
