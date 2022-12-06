@@ -76,7 +76,9 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
         throw InvalidMove{};
       } else if (abs(endCol - startCol) == 1 && startRow - endRow == 1 && endp->getColor() != "black") { // checks for valid pawn capture
         throw InvalidMove{};
-      } 
+      } else if (startRow - endRow == 2 && pieces[startRow-1][startCol]->getType() != ' '){ // checks for pieces in path of pawn
+        throw InvalidMove{};
+      }
     } else if (color == "black"){
       if (startRow == 1 && endCol - startCol == 0 && endRow - startRow != 1 && endRow - startRow != 2){
         throw InvalidMove{};
@@ -84,7 +86,9 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
         throw InvalidMove{};
       } else if (abs(endCol - startCol) == 1 && endRow - startRow == 1 && endp->getColor() != "white") { // checks for valid pawn capture
         throw InvalidMove{};
-      } 
+      } else if (endRow - startRow == 2 && pieces[endRow-1][startCol]->getType() != ' '){ // checks for pieces in path of pawn
+        throw InvalidMove{};
+      }
     }
   }
 
@@ -92,11 +96,20 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
       if (endRow != startRow && endCol != startCol) {
         throw InvalidMove{};
       } else if (endRow == startRow) {
-        for (int i = startCol; i < endCol; i++){
+        if (endCol > startCol) {
+          for (int i = startCol; i < endCol; i++){
           if (pieces[startRow][i]->getType() != ' '){
             std::cout << "something is blockign the way" << std::endl;
             throw InvalidMove{};
           }
+        }
+        } else if (startCol > endCol) {
+          for (int i = startCol; i > endCol; i--){
+          if (pieces[startRow][i]->getType() != ' '){
+            std::cout << "something is blockign the way" << std::endl;
+            throw InvalidMove{};
+          }
+        }
         }
       } else if (endCol == startCol) {
         if (endRow > startRow) {
