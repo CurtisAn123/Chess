@@ -54,6 +54,14 @@ void GameStudio::setup() {
         p = new Rook("black", 'r', row, col);
       }
       Board->setPiece(p, row, col);
+      render();
+    } else if (command == "-") {
+      char column;
+      int row, col;
+      in >> column >> row;
+      
+    } else if (command == "done") {
+      break;
     }
   }
 }
