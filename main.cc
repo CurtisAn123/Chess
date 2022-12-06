@@ -57,7 +57,9 @@ int main() {
       s.setBoard(board);
     }
     else if (command == "setup") {
-      // use getPiece and setPiece
+      // code a new Board constructor with a parameter that tells it to enter setup mode
+      // constructor should take input and output and setup board accordingly
+      // call check("white") and check("black") to make sure kings aren't in check and board if finished
     }
     else if (command == "move") {
       try {
