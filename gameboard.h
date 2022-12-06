@@ -11,8 +11,8 @@ class GameBoard {
   std::ostream &out = std::cout;
 
   Piece *** pieces;
-  King * whiteKing;
-  King * blackKing;
+  Piece * whiteKing;
+  Piece * blackKing;
 
   bool checkmate();
   bool stalemate();

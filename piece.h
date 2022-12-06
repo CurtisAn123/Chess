@@ -15,6 +15,8 @@ public:
   virtual bool move(int r, int c, Piece*** pieces) = 0;
   char getType () const;
   std::string getColor() const;
+  int getRow();
+  int getCol();
   virtual ~Piece() = default;
 };
 

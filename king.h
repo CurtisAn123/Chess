@@ -8,8 +8,6 @@ class King : public Piece {
 public:
   King(std::string color, char type, int row, int col);
   bool move(int c, int r, Piece*** pieces) override;
-  int getRow();
-  int getCol();
   ~King();
 };
 

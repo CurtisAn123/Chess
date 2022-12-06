@@ -7,10 +7,9 @@ bool King::move(int r, int c, Piece*** pieces) {
   if ((abs(r - row) != 1 && abs(r - row) != 0) || (abs(c - col) != 0 && abs(c - col) != 1)) {
         return false;
       }
+      row = r;
+      col = c;
+      return true;
 }
-
-int King::getRow() { return row; }
-
-int King::getCol() { return col; }
 
 King::~King() {}

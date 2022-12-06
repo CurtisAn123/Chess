@@ -5,8 +5,11 @@ Knight::Knight(std::string color, char type, int row, int col):
 
 bool Knight::move(int r, int c, Piece*** pieces) {
   if ((abs(r - row) != 2 || abs(c - col) != 1) && (abs(r - row) != 1 || abs(c - col != 2 ))) {
-        return false;
-      }
+    return false;
+  }
+  row = r;
+  col = c;
+  return true;
 }
 
 Knight::~Knight() {}

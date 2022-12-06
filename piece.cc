@@ -10,3 +10,7 @@ char Piece::getType() const {
 std::string Piece::getColor() const {
   return color;
 }
+
+int Piece::getRow() { return row; }
+
+int Piece::getCol() { return col; }

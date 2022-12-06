@@ -53,19 +53,22 @@ int main() {
         std::cout << "Please specify human or computer" << std::endl;
         continue;
       }
-      GameBoard *board = new GameBoard();
-      s.setBoard(board);
+      if (s.getBoard() == nullptr) {
+        GameBoard *board = new GameBoard();
+        s.setBoard(board);
+      }
     }
     else if (command == "setup") {
-      // code a new Board constructor with a parameter that tells it to enter setup mode
-      // constructor should take input and output and setup board accordingly
-      // call check("white") and check("black") to make sure kings aren't in check and board if finished
+      // codes a new Board constructor with a parameter that tells it to enter setup mode
       
       GameBoard *board = new GameBoard(true);
       s.setBoard(board);
       s.setup();
     }
     else if (command == "move") {
+      if (s.getBoard() == nullptr) {
+        std::cout << "Please create a game first" << std::endl;
+      }
       try {
         // checks if it is a human turn to play
         if ((whiteToPlay && s.getWhite()->getType() == 'h') || (!whiteToPlay && s.getBlack()->getType() == 'h')) {
@@ -99,6 +102,8 @@ int main() {
       Text * text = new Text{&s};
       observers.push_back(text);
       s.attach(observers.back());
+    } else {
+      std::cout << "Invalid Command" << std::endl;
     }
   }
   

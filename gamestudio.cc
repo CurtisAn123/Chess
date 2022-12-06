@@ -6,6 +6,7 @@
 #include "bishop.h"
 #include "knight.h"
 #include "rook.h"
+#include "empty.h"
 
 #include "invalidmove.h"
 
@@ -17,7 +18,8 @@ void GameStudio::setBoard(GameBoard * Board) {
   if (this->Board) {
     delete this->Board;
   }
-  this->Board = Board; }
+  this->Board = Board;
+}
 
 void GameStudio::setup() {
   std::string command;
@@ -27,6 +29,7 @@ void GameStudio::setup() {
       int row, col;
       std::cin >> type >> column >> row;
       col = column - 97;
+      row = 8 - row;
       Piece * p;
       if (type == 'K') {
         p = new King("white", 'k', row, col);
@@ -59,9 +62,17 @@ void GameStudio::setup() {
       char column;
       int row, col;
       in >> column >> row;
-      
+      col = column - 97;
+      row = 8 - row;
+      Piece * p = new Empty("", ' ', row, col);
+      Board->setPiece(p, row, col);
+      render();
     } else if (command == "done") {
-      break;
+      if (Board->legalBoard()) {
+        return;
+      } else {
+        out << "Board is not in a legal state" << std::endl;
+      }
     }
   }
 }

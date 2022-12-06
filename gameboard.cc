@@ -29,7 +29,7 @@ GameBoard::GameBoard(): whiteKing{new King("white", 'k', 7, 4)}, blackKing{new K
   pieces[0][7] = new Rook("black", 'r', 0, 7);
 
   for (int i = 0; i < 8; ++i) {
-    pieces[1][i] = new Pawn("black", 'p', 0, i);
+    pieces[1][i] = new Pawn("black", 'p', 1, i);
   }
 
   // empty spaces
@@ -73,21 +73,30 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
   Piece * p = pieces[startRow][startCol];
   Piece * endp = pieces[endRow][endCol];
   if (p->getColor() != color) {
+    out << "Wrong colour." << std::endl;
     throw InvalidMove{};
   } 
   if (endp->getColor() == color) {
+    out << "Already a piece there." << std::endl;
     throw InvalidMove{};
   }
 
   pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
   if (!legalBoard()) {
+    out << "Illegal board." << std::endl;
+    delete pieces[startRow][startCol];
+    pieces[startRow][startCol] = p;
     throw InvalidMove{};
   } // checks if board is legal if piece has moved (original square is empty)
 
-    if (!p->move(endRow, endCol, pieces)) {
+  delete pieces[startRow][startCol];
+  pieces[startRow][startCol] = p;
+  if (!p->move(endRow, endCol, pieces)) {
+    out << "bad move" << std::endl;
     throw InvalidMove{};
   } // checks if p is able to move to the end square
   
+  pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
   delete pieces[endRow][endCol];
   pieces[endRow][endCol] = p;
 }
@@ -98,6 +107,7 @@ bool GameBoard::pawnPromotion(int r, int c, std::string color){
   } else if (color == "black" && r == 7) {
     return true;
   }
+  return false;
 }
 
 bool GameBoard::verticalCheck(int r, int c, std::string color) {
@@ -292,6 +302,9 @@ bool GameBoard::check(std::string color) {
 }
 
 bool GameBoard::legalBoard() {
+  if (whiteKing == nullptr || blackKing == nullptr) {
+    return false;
+  }
   // ensure both kings are NOT in check
   return !check("white") && !check("black");
 }
@@ -301,7 +314,30 @@ Piece * GameBoard::getPiece(int row, int col) {
 }
 
 void GameBoard::setPiece(Piece *p, int r, int c) {
-  delete pieces[r][c];
+  if (pieces[r][c]->getType() == 'k' && pieces[r][c]->getColor() == "white") {
+    delete pieces[r][c];
+    whiteKing = nullptr;
+  }
+  else if (pieces[r][c]->getType() == 'k' && pieces[r][c]->getColor() == "black") {
+    delete pieces[r][c];
+    blackKing = nullptr;
+  } else {
+    delete pieces[r][c];
+  }
+  
+  if (p->getType() == 'k' && p->getColor() == "white") {
+    if (whiteKing != nullptr) {
+      out << "There cannot be two White kings" << std::endl;
+      return;
+    }
+    whiteKing = p;
+  } else if (p->getType() == 'k' && p->getColor() == "black") {
+    if (blackKing != nullptr) {
+      out << "There cannot be two Black kings" << std::endl;
+      return;
+    }
+    blackKing = p;
+  }
   pieces[r][c] = p;
 }
 
