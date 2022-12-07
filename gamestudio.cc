@@ -12,7 +12,7 @@
 
 GameStudio::GameStudio(): whiteWins{0}, blackWins{0}, white{nullptr}, black{nullptr}, Board{nullptr} {}
 
-GameBoard *&GameStudio::getBoard() { return Board; }
+GameBoard *GameStudio::getBoard() { return Board; }
 
 void GameStudio::setBoard(GameBoard * Board) {
   if (this->Board) {
@@ -90,8 +90,8 @@ void GameStudio::setBlack(Player * player) {
   black = player;
 }
 
-Player *&GameStudio::getWhite() { return white; }
-Player *&GameStudio::getBlack() { return black; }
+Player *GameStudio::getWhite() { return white; }
+Player *GameStudio::getBlack() { return black; }
 
 void GameStudio::movePiece(int startRow, int startCol, int endRow, int endCol, std::string color) {
   if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {

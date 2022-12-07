@@ -21,13 +21,13 @@ class GameStudio : public Subject {
  public:
   GameStudio();
 
-  GameBoard *&getBoard();
+  GameBoard *getBoard();
   void setBoard(GameBoard * Board);
 
   void setWhite(Player * player);
   void setBlack(Player * player);
-  Player *&getWhite();
-  Player *&getBlack();
+  Player *getWhite();
+  Player *getBlack();
 
   void movePiece(int startRow, int startCol, int endRow, int endCol, std::string color);
   void setup();

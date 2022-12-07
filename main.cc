@@ -68,6 +68,11 @@ int main() {
     else if (command == "move") {
       if (s.getBoard() == nullptr) {
         std::cout << "Please create a game first" << std::endl;
+        continue;
+      }
+      if (s.getWhite() == nullptr) {
+        std::cout << "Please create a game first" << std::endl;
+        continue;
       }
       try {
         // checks if it is a human turn to play
