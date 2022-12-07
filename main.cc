@@ -100,7 +100,7 @@ int main() {
         }
         whiteToPlay = !whiteToPlay;
       } catch (InvalidMove e) {
-        std::cout << "Invalid Move" << std::endl;
+        std::cout << "Invalid Move: " << e.getMsg() << std::endl;
       }
     }
     else if (command == "addtext") {

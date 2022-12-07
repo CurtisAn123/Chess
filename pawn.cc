@@ -24,7 +24,7 @@ bool Pawn::move(int r, int c, Piece*** pieces) {
       } else if (r - row == 2 && pieces[r-1][col]->getType() != ' '){ // checks for pieces in path of pawn
         return false;
       }
-    } 
+    }
     row = r;
     col = c;
     return true;

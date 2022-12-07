@@ -73,27 +73,23 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
   Piece * p = pieces[startRow][startCol];
   Piece * endp = pieces[endRow][endCol];
   if (p->getColor() != color) {
-    out << "Wrong colour." << std::endl;
-    throw InvalidMove{};
+    throw InvalidMove{"Cannot move opponent piece"};
   } 
   if (endp->getColor() == color) {
-    out << "Already a piece there." << std::endl;
-    throw InvalidMove{};
+    throw InvalidMove{"Cannot capture own piece"};
   }
 
   pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
   if (!legalBoard()) {
-    out << "Illegal board." << std::endl;
     delete pieces[startRow][startCol];
     pieces[startRow][startCol] = p;
-    throw InvalidMove{};
+    throw InvalidMove{"Illegal board state after move"};
   } // checks if board is legal if piece has moved (original square is empty)
 
   delete pieces[startRow][startCol];
   pieces[startRow][startCol] = p;
   if (!p->move(endRow, endCol, pieces)) {
-    out << "bad move" << std::endl;
-    throw InvalidMove{};
+    throw InvalidMove{"Invalid End Square"};
   } // checks if p is able to move to the end square
   
   pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);

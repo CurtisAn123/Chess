@@ -95,12 +95,11 @@ Player *GameStudio::getBlack() { return black; }
 
 void GameStudio::movePiece(int startRow, int startCol, int endRow, int endCol, std::string color) {
   if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
-    out << "out of range";
-    throw InvalidMove{};
+    throw InvalidMove{"out of range"};
   }
   Board->move(startRow, startCol, endRow, endCol, color);
   render();
-
+  
   // code checkmate and stalemate HERE. Throw exceptions for each
   // catch in main. Checkmate exception should have a string on who wins
 
