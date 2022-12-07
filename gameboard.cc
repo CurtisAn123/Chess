@@ -79,22 +79,20 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
     throw InvalidMove{"Cannot capture own piece"};
   }
 
+  if (!p->move(endRow, endCol, pieces)) {
+    throw InvalidMove{"Invalid End Square"};
+  } // checks if p is able to move to the end square
+
+  pieces[endRow][endCol] = p;
   pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
   if (!legalBoard()) {
     delete pieces[startRow][startCol];
     pieces[startRow][startCol] = p;
+    pieces[endRow][endCol] = endp;
     throw InvalidMove{"Illegal board state after move"};
-  } // checks if board is legal if piece has moved (original square is empty)
+  } // checks if board is legal if piece has moved
 
-  delete pieces[startRow][startCol];
-  pieces[startRow][startCol] = p;
-  if (!p->move(endRow, endCol, pieces)) {
-    throw InvalidMove{"Invalid End Square"};
-  } // checks if p is able to move to the end square
-  
-  pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
-  delete pieces[endRow][endCol];
-  pieces[endRow][endCol] = p;
+  delete endp;
 }
 
 bool GameBoard::pawnPromotion(int r, int c, std::string color){
@@ -283,6 +281,71 @@ bool GameBoard::pawnCheck(int r, int c, std::string color) {
   return false;
 }
 
+bool GameBoard::kingCheck(int r, int c, std::string color) {
+  int kr, kc;
+  // vertical horizontal checks
+  kr = r + 1;
+  kc = c;
+  if (kr < 8) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+  kr = r - 1;
+  kc = c;
+  if (kr >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+  kr = r;
+  kc = c + 1;
+  if (kc < 8) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+  kr = r;
+  kc = c - 1;
+  if (kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+
+  // diagonal checks
+  kr = r + 1;
+  kr = c + 1;
+  if (kr < 8 && kc < 8) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+  kr = r - 1;
+  kr = c - 1;
+  if (kr >= 0 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+  kr = r + 1;
+  kr = c - 1;
+  if (kr < 8 && kc >= 0) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+  kr = r - 1;
+  kr = c + 1;
+  if (kr >= 0 && kc < 8) {
+    if (pieces[kr][kc]->getColor() != color && pieces[kr][kc]->getType() == 'k') {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 bool GameBoard::check(std::string color) {
   // returns true if color's king is in check
   int r, c;
@@ -294,7 +357,8 @@ bool GameBoard::check(std::string color) {
     c = blackKing->getCol();
   }
 
-  return verticalCheck(r, c, color) || diagonalCheck(r, c, color) || knightCheck(r, c, color) || pawnCheck(r, c, color);
+  return verticalCheck(r, c, color) || diagonalCheck(r, c, color) || knightCheck(r, c, color)
+  || pawnCheck(r, c, color) || kingCheck(r, c, color);
 }
 
 bool GameBoard::legalBoard() {

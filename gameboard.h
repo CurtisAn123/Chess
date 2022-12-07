@@ -22,6 +22,7 @@ class GameBoard {
   bool diagonalCheck(int r, int c, std::string color);
   bool knightCheck(int r, int c, std::string color);
   bool pawnCheck(int r, int c, std::string color);
+  bool kingCheck(int r, int c, std::string color);
 
  public:
   GameBoard();
@@ -29,9 +30,9 @@ class GameBoard {
   void move(int startRow, int startCol, int endRow, int endCol, std::string color);
 
   bool check(std::string color);
-  void resetBoard();
 
-  bool legalBoard();
+  bool legalBoard(); // checks if the board is in a legal state
+
   Piece *getPiece(int row, int col);
   void setPiece(Piece *p, int r, int c);
 

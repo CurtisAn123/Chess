@@ -60,7 +60,7 @@ int main() {
     }
     else if (command == "setup") {
       // codes a new Board constructor with a parameter that tells it to enter setup mode
-      
+
       GameBoard *board = new GameBoard(true);
       s.setBoard(board);
       s.setup();
