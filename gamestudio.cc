@@ -9,6 +9,7 @@
 #include "empty.h"
 
 #include "invalidmove.h"
+#include "checkmate.h"
 
 GameStudio::GameStudio(): whiteWins{0}, blackWins{0}, white{nullptr}, black{nullptr}, Board{nullptr} {}
 
@@ -93,20 +94,31 @@ void GameStudio::setBlack(Player * player) {
 Player *GameStudio::getWhite() { return white; }
 Player *GameStudio::getBlack() { return black; }
 
+int GameStudio::getWhiteWins() { return whiteWins; }
+int GameStudio::getBlackWins() { return blackWins; }
+
 void GameStudio::movePiece(int startRow, int startCol, int endRow, int endCol, std::string color) {
   if (startRow > 7 || startRow < 0 || startCol > 7 || startCol < 0 || endRow > 7 || endRow < 0 || endCol > 7 || endCol < 0) {
     throw InvalidMove{"out of range"};
   }
   Board->move(startRow, startCol, endRow, endCol, color);
   render();
-  
+
   // code checkmate and stalemate HERE. Throw exceptions for each
   // catch in main. Checkmate exception should have a string on who wins
 
   if (Board->check("white")) {
+    if (Board->checkmate("white")) {
+      ++blackWins;
+      throw Checkmate{"Black"};
+    }
     out << "White king is in check." << std::endl;
   }
   if (Board->check("black")) {
+    if (Board->checkmate("black")) {
+      ++whiteWins;
+      throw Checkmate{"White"};
+    }
     out << "Black king is in check." << std::endl;
   }
 }

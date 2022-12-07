@@ -85,7 +85,7 @@ void GameBoard::move(int startRow, int startCol, int endRow, int endCol, std::st
 
   pieces[endRow][endCol] = p;
   pieces[startRow][startCol] = new Empty("", ' ', startRow, startCol);
-  if (!legalBoard()) {
+  if (check(color)) {
     delete pieces[startRow][startCol];
     pieces[startRow][startCol] = p;
     pieces[endRow][endCol] = endp;
@@ -359,6 +359,86 @@ bool GameBoard::check(std::string color) {
 
   return verticalCheck(r, c, color) || diagonalCheck(r, c, color) || knightCheck(r, c, color)
   || pawnCheck(r, c, color) || kingCheck(r, c, color);
+}
+
+bool GameBoard::check(std::string color, int r, int c) {
+  // returns true if square (r, c) is under check by opponents of color
+
+  return verticalCheck(r, c, color) || diagonalCheck(r, c, color) || knightCheck(r, c, color)
+  || pawnCheck(r, c, color) || kingCheck(r, c, color);
+}
+
+bool GameBoard::checkmate(std::string color) {
+  // returns true if (color) king has no squares to move to
+  int r, c;
+  if (color == "white") {
+    r = whiteKing->getRow();
+    c = whiteKing->getCol();
+  } else {
+    r = blackKing->getRow();
+    c = blackKing->getCol();
+  }
+
+  int kr, kc; // king row, king col
+  kr = r + 1;
+  kc = c;
+  if (kr < 8) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+  kr = r - 1;
+  kc = c;
+  if (kr >= 0) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+  kr = r;
+  kc = c + 1;
+  if (kc < 8) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+  kr = r;
+  kc = c - 1;
+  if (kc >= 0) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+
+  // diagonal checks
+  kr = r + 1;
+  kr = c + 1;
+  if (kr < 8 && kc < 8) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+  kr = r - 1;
+  kr = c - 1;
+  if (kr >= 0 && kc >= 0) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+  kr = r + 1;
+  kr = c - 1;
+  if (kr < 8 && kc >= 0) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+  kr = r - 1;
+  kr = c + 1;
+  if (kr >= 0 && kc < 8) {
+    if (!(pieces[kr][kc]->getColor() == color || check(color, kr, kc))) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool GameBoard::legalBoard() {

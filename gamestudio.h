@@ -28,6 +28,8 @@ class GameStudio : public Subject {
   void setBlack(Player * player);
   Player *getWhite();
   Player *getBlack();
+  int getWhiteWins();
+  int getBlackWins();
 
   void movePiece(int startRow, int startCol, int endRow, int endCol, std::string color);
   void setup();

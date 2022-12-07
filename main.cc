@@ -15,6 +15,7 @@
 #include "piece.h"
 
 #include "invalidmove.h"
+#include "checkmate.h"
 
 int main() {
   
@@ -87,7 +88,6 @@ int main() {
           endCol = end - 97;
           startRow = 8 - startRow;
           endRow = 8 - endRow;
-          std::cout << startRow << startCol << endRow << endCol << std::endl;
           if (whiteToPlay) {
             s.movePiece(startRow, startCol, endRow, endCol, "white");
           } else {
@@ -101,16 +101,27 @@ int main() {
         whiteToPlay = !whiteToPlay;
       } catch (InvalidMove e) {
         std::cout << "Invalid Move: " << e.getMsg() << std::endl;
+      } catch (Checkmate c) {
+        std::cout << "Checkmate! " <<  c.getColor() << " wins!" << std::endl;
       }
     }
     else if (command == "addtext") {
       Text * text = new Text{&s};
       observers.push_back(text);
       s.attach(observers.back());
-    } else {
+    }
+    else if (command == "addgraphics") {
+      // implement graphics here
+      std::cout << "Graphics Window" << std::endl;
+    }
+    else {
       std::cout << "Invalid Command" << std::endl;
     }
   }
+
+  std::cout << "Final Score:" << std::endl;
+  std::cout << "White: " << s.getWhiteWins() << std::endl;
+  std::cout << "Black: " << s.getBlackWins() << std::endl;
   
   for (auto & ob: observers) {
     delete ob;
